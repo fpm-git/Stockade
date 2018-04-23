@@ -1,0 +1,18 @@
+{
+  "name": "floatperms",
+  "version": "0.0.1",
+  "description": "A permissions helper for FPM Node apps. Provides both a global and namespaced instances used to track registered permission providers and cleanly make queries against them.",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "npm run lint && npm run mocha",
+    "mocha": "mocha --recursive",
+    "lint": "node ./node_modules/eslint/bin/eslint . --max-warnings=0 --report-unused-disable-directives && echo '✔  Your code looks good.'"
+  },
+  "author": "Floatplane Media Inc.",
+  "license": "SEE LICENSE IN LICENSE",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "eslint": "^4.19.1",
+    "mocha": "^5.1.1"
+  }
+}
