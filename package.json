@@ -1,6 +1,6 @@
 {
   "name": "floatperms",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A permissions helper for FPM Node apps. Provides both a global and namespaced instances used to track registered permission providers and cleanly make queries against them.",
   "main": "src/main.js",
   "scripts": {
