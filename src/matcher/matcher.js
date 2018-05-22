@@ -301,7 +301,7 @@ async function matchCompoundValidator(req, validator) {
     result.failedValidations = result.failedValidations.filter((v, i, arr) => arr.indexOf(v) === i);
 
     // Helper function used to check if a single test did pass (used for determining overall state below).
-    const didValidatorPass = (validatorRes) => validatorRes && (typeof validatorRes === 'object') && (validatorRes.passed === true);
+    const didValidatorPass = (validatorRes) => validatorRes && (typeof validatorRes === 'object') && (validatorRes.hasPassed === true);
 
     // Aaand finally: handle our result overall pass state accordingly for our method type.
     switch (validator.method) {
