@@ -1,6 +1,10 @@
 {
   "name": "stockade",
   "version": "1.0.0",
+  "engines": {
+    "node": ">=6.9.0",
+    "npm": ">=3.10.8"
+  },
   "description": "A permissions helper for FPM Node apps. Provides both a global and namespaced instances used to track registered permission providers and cleanly make queries against them.",
   "main": "src/main.js",
   "scripts": {
