@@ -1,5 +1,5 @@
-# floatperms
-Floatperms and the coupled [sails-hook-floatperms](https://github.com/fpm-git/sails-hook-floatperms) have been designed to fill the need for a strict, yet highly flexible permissions system, supplanting the policies system which Sails provides by default.
+# Stockade
+Stockade and the coupled [Stockade-hook](https://github.com/fpm-git/stockade-hook) have been designed to fill the need for a strict, yet highly flexible permissions system, supplanting the policies system which Sails provides by default.
 
 ## What's the big idea?
 Sails policies function just fine for small projects, however, as project size grows, a few issues with the default policies implementation may become evident:
@@ -14,27 +14,27 @@ Sails policies function just fine for small projects, however, as project size g
 
 - Policies are potentially less secure. Forgetting to define the policies for an action can (and has!) result in accidentally exposing what should be a secured route. Further, due to the lack of a common standard to export shared/relevant data from policies, they can be more error-prone.
 
-Floatperms aims to solve these problems and more, allowing for highly reusable and clean permission validation code, while providing also the best performance you could ask for.
+Stockade aims to solve these problems and more, allowing for highly reusable and clean permission validation code, while providing also the best performance you could ask for.
 
 ## How does this fix policies?
-How does Floatperms solve the issues listed above? Simple:
+How does Stockade solve the issues listed above? Simple:
 
-- Floatperms enforces that related permissions are grouped together into providers, and offers handlers that can be used to initialize data once for shared use across multiple validations. Performance and sanity-saving goodness.
+- Stockade enforces that related permissions are grouped together into providers, and offers handlers that can be used to initialize data once for shared use across multiple validations. Performance and sanity-saving goodness.
 
-- As mentioned just above, Floatperms exposes providers for grouping together all validations of a certain variety, allowing for organised validations that are easy to reason about.
+- As mentioned just above, Stockade exposes providers for grouping together all validations of a certain variety, allowing for organised validations that are easy to reason about.
 
-- Floatperms' permission matchers allow for the parameters of each validator to be remapped on a per-action basis using values pulled from cookies, request parameters, or general request fields.
+- Stockade permission matchers allow for the parameters of each validator to be remapped on a per-action basis using values pulled from cookies, request parameters, or general request fields.
 
-- Floatperms provides means to combine validators and match against subsets of validators, ensuring there will be no duplicate code written just to provide more flexible validations. 
+- Stockade provides means to combine validators and match against subsets of validators, ensuring there will be no duplicate code written just to provide more flexible validations. 
 
-- Floatperms does its best to promote a secure end result: by default, the corresponding [sails-hook-floatperms](https://github.com/fpm-git/sails-hook-floatperms) will refuse to serve any route which does not have permissions defined for it, avoiding any accidents caused by a forgotten policy definition. Further, the "Floatperms way" tries to encourage a common means of exporting data from permission matchers for use in actions, such that errors become immediately evident and code remains clean, standardised, and feels natural to work with.
+- Stockade does its best to promote a secure end result: by default, the corresponding [Stockade-hook](https://github.com/fpm-git/stockade-hook) will refuse to serve any route which does not have permissions defined for it, avoiding any accidents caused by a forgotten policy definition. Further, the "Stockade way" tries to encourage a common means of exporting data from permission matchers for use in actions, such that errors become immediately evident and code remains clean, standardised, and feels natural to work with.
 
-Now that you understand a little bit the issues that Floatperms was made to overcome, continue onwards to learn how exactly Floatperms should be used.
+Now that you understand a little bit the issues that Stockade was made to overcome, continue onwards to learn how exactly Stockade should be used.
 
 ## Usage
 
 ### General usage
-Getting started with Floatperms is generally fairly simple. All that has to be done before Sails (or Express) requests can be validated is defining your validation provider(s), which is no real hassle.
+Getting started with Stockade is generally fairly simple. All that has to be done before Sails (or Express) requests can be validated is defining your validation provider(s), which is no real hassle.
 
 A validation provider consists of 3 general components:
 
@@ -48,7 +48,7 @@ A validation provider consists of 3 general components:
       - Begin your parameter definition with `req.` if you just want to pull some arbitrary value from the request object. For example: `ip: 'req.ip'` can be used to initialize the `ip` parameter to the requester's IP address.
 
 2. Event handlers (lifecycle callbacks).
-   - Floatperms provides two event handlers at present: `before(...)` and `params(...)`.
+   - Stockade provides two event handlers at present: `before(...)` and `params(...)`.
    - The `before` method is called just before parameters are extracted from the request. It receives the `req`, `params`, and `exports` parameters.
       - Has signature: `before(req: SailsRequest, params: Object, exports: Object)`
       - The `req` parameter should seldom be used, but is provided if need-be.
@@ -75,7 +75,7 @@ A validation provider consists of 3 general components:
 Putting all the pieces together, you might get something like:
 
 ```js
-const Permissions = require('floatperms');
+const Permissions = require('stockade');
 
 const user = {
 
@@ -169,7 +169,7 @@ Permissions.register(user, 'user');
 At this point, validating any request against the new provider would look something like this:
 
 ```js
-const Permissions = require('floatperms');
+const Permissions = require('stockade');
 
 // Create a basic matcher we'll check in our request handler. Ensures the user is logged-in.
 const matcher = Permissions.for('user').allOf('isLoggedIn');
@@ -192,8 +192,8 @@ And that's that: the request handler above will check against the `matcher` befo
 
 Of course, having to manually run the validations for each request is mostly [unacceptable](https://youtu.be/07So_lJQyqw). What'd be best is a way to pull these out somewhere, allowing us to avoid cluttering up our requests. Luckily, there's a hook for that, so read on below for more information!
 
-### Coupled with sails-hook-floatperms
-The ideal use case for Floatperms is coupled with the [sails-hook-floatperms](https://github.com/fpm-git/sails-hook-floatperms) hook. This hook automatically wraps the actions in your Sails application and enforces that proper permissions are defined for each; trying to execute an action which has no permissions defined will result in a **403 Forbidden** response.
+### Coupled with Stockade-hook
+The ideal use case for Stockade is coupled with the [Stockade-hook](https://github.com/fpm-git/stockade-hook) hook. This hook automatically wraps the actions in your Sails application and enforces that proper permissions are defined for each; trying to execute an action which has no permissions defined will result in a **403 Forbidden** response.
 
 When using this hook, binding permission guards to specific actions becomes simple and clean: just add a `permissions` field to the controller's `_config`, containing the names of all routes to protect, associated with their desired validations.
 
@@ -205,7 +205,7 @@ For example:
  * Provides actions related to updating and retrieving user data.
  */
 
-const Permissions = require('floatperms');
+const Permissions = require('stockade');
 
 module.exports = {
 
@@ -223,11 +223,11 @@ module.exports = {
 ```
 In this example, any route calling the `getInfo` action will result in a check against the `user:isLoggedIn` validation method. If the user isn't logged-in, the validation will fail and so the `getInfo` method won't be called, and the user will receive a **403 Forbidden** response. If the user is logged-in, all validations pass; the action will be called as normal, with also the requester's user being bound to the `req.permissions.user.self` field.
 
-That's the extent of using [sails-hook-floatperms](https://github.com/fpm-git/sails-hook-floatperms): validation error handling is automatically done for you. Further, any errors which your action itself may happen to throw will also be caught and logged (protecting against the complete termination resulting from scenarios where some async function throws but the error is not caught).
+That's the extent of using [Stockade-hook](https://github.com/fpm-git/stockade-hook): validation error handling is automatically done for you. Further, any errors which your action itself may happen to throw will also be caught and logged (protecting against the complete termination resulting from scenarios where some async function throws but the error is not caught).
 
 
 ## Advanced Usage
-There may come a time when some routes need more than simple checking against a complete set of validations, or where you'd like to go against default behaviour. Both are valid use-cases, and you aren't prohibited from doing so with Floatperms, in fact it is quite easy to do so.
+There may come a time when some routes need more than simple checking against a complete set of validations, or where you'd like to go against default behaviour. Both are valid use-cases, and you aren't prohibited from doing so with Stockade, in fact it is quite easy to do so.
 
 This section is divided into two subsections: **Validator Customizations** and **Compound Validators**. The first details how to override parameters, use different validation methods, etc. The latter explains how validators may be combined together, to accomplish more complex validation schemes without having to build messy composite validation methods.
 
@@ -235,7 +235,7 @@ This section is divided into two subsections: **Validator Customizations** and *
 
 **No-op validators:**
 
-Sometimes you might have an action which needs no protection. This poses an issue with [sails-hook-floatperms](https://github.com/fpm-git/sails-hook-floatperms), which enforces the constraint that all actions must have a validator defined. For this sort of scenario, there exists a special no-op validation, which you can generate and use like so:
+Sometimes you might have an action which needs no protection. This poses an issue with [Stockade-hook](https://github.com/fpm-git/stockade-hook), which enforces the constraint that all actions must have a validator defined. For this sort of scenario, there exists a special no-op validation, which you can generate and use like so:
 
 ```js
 _config: {
