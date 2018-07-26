@@ -5,13 +5,21 @@
     "node": ">=6.9.0",
     "npm": ">=3.10.8"
   },
-  "description": "A permissions helper for FPM Node apps. Provides both a global and namespaced instances used to track registered permission providers and cleanly make queries against them.",
+  "description": "A permissions helper for Node apps. Provides both a global and namespaced instances used to track registered permission providers and cleanly make queries against them.",
   "main": "src/main.js",
   "scripts": {
     "test": "npm run lint && npm run mocha",
     "mocha": "mocha --recursive",
     "lint": "node ./node_modules/eslint/bin/eslint . --max-warnings=0 --report-unused-disable-directives && echo '✔  Your code looks good.'"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fpm-git/stockade.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fpm-git/stockade/issues"
+  },
+  "homepage": "https://github.com/fpm-git/stockade#readme",
   "author": "Floatplane Media Inc.",
   "license": "SEE LICENSE IN LICENSE",
   "devDependencies": {
