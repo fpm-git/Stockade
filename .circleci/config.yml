@@ -1,0 +1,44 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2
+jobs:
+  test:
+    docker:
+      - image: circleci/node:8.11.2
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+
+    working_directory: ~/repo
+
+    steps:
+      # Add machine user read-only ssh key
+      - add_ssh_keys:
+          fingerprints:
+          - "df:7f:a3:50:88:8c:5d:70:53:1e:86:3d:00:6e:b6:85"
+
+      - checkout
+
+      # Download any cached dependencies
+      - restore_cache:
+          keys:
+          - stockade-dependencies-{{ checksum "package.json" }}
+
+      # Install package dependencies
+      - run: npm install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: stockade-dependencies-{{ checksum "package.json" }}
+
+      # Run our tests
+      - run: npm test
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test
