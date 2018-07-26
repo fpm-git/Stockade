@@ -4,10 +4,29 @@
  * state and match against requests.
  */
 
-// Initialize our private namespaces collection, to be used as provider store.
-const namespaces = {
-    global: {}
+// Stockade object defaults, move this to auxiliary.
+const defaults = {
+    namespaces: {
+        global: {},
+    },
 };
+
+// Pull out our global stockade object, or create a new one if not yet defined.
+//
+// While I'd like the stockade store to be private and accessible only from this module,
+// there are some configurations where the module cannot be fully deduplicated, causing
+// issues where some provider may not resolve. In practice, this yields no issue.
+//
+// (Note: see issue #2)
+const stockade = (global._stockade instanceof Object)
+    ? global._stockade
+    : Object.defineProperty(global, '_stockade', {
+        writable: false,
+        value: defaults,
+    })._stockade;
+
+// Pull the namespaces out of our global object.
+const namespaces = stockade.namespaces;
 
 const createValidator = require('./validator/validator').create;
 const greenTea = require('./matcher/matcher')(namespaces);
