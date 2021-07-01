@@ -1,7 +1,7 @@
 # Stockade
 [![npm version](https://badge.fury.io/js/stockade.svg)](https://badge.fury.io/js/stockade)
 [![Licensed under the MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/fpm-git/Stockade/blob/master/LICENSE)
-![Build](https://github.com/github/docs/actions/workflows/node.js.yml/badge.svg?branch=master)
+![Build](https://github.com/fpm-git/Stockade/actions/workflows/node.js.yml/badge.svg?branch=master)
 
 
 Stockade and the coupled [Stockade-hook](https://github.com/fpm-git/stockade-hook) have been designed to fill the need for a strict, yet highly flexible permissions system, supplanting the policies system which Sails provides by default.
