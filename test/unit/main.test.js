@@ -112,7 +112,8 @@ describe('Main exports conformance tests', () => {
             const _params = {
                 p1: 'req.this.is.a.request.field.param',
                 p2: '$this.is.a.session.param',
-                p3: '?thisIsAnHTTPRequestParam'
+                p3: '?thisIsAnHTTPRequestParam',
+                p4: { value: 1234 }
             };
             const cycleProvider = () => {
                 floatperms.register({ _params }, 'withParams');
@@ -206,7 +207,7 @@ describe('Main exports conformance tests', () => {
                 }, 'badParamDefs');
             };
 
-            expect(tryRegister).to.throw('The provider definition "badParamDefs" in namespace "global" contains an invalid _params entry "p1". Expected a string, but instead found: (boolean) false');
+            expect(tryRegister).to.throw('The provider definition "badParamDefs" in namespace "global" contains an invalid _params entry "p1". Expected a string or an object with a "value" field, but instead found: (boolean) false');
         });
     });
 

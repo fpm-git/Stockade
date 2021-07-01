@@ -76,6 +76,13 @@ async function extractParams(req, overrideDefs, provider, schemeName) {
 
     // Helper function used to extract a single parameter.
     const extract = (req, definition) => {
+        // If we've an object given, try to extract from a `value` field.
+        if (definition.value instanceof Object) {
+            if (!('value' in definition.value)) {
+                throw new Error(`Expected parameter definition value for "${definition.name}" to contain a "value" field, but instead it was not set.`);
+            }
+            return definition.value.value;
+        }
         // If the definition starts with '?', then it's a shorthand HTTP param value
         if (definition.value.startsWith('?')) {
             return req.param(definition.value.substr(1));
@@ -101,17 +108,16 @@ async function extractParams(req, overrideDefs, provider, schemeName) {
         }, req);
     };
 
-    // Handle merging overrides with base parameters, ignoring any non-string values, and excluding all falsy values remaining.
+    // Handle merging overrides with base parameters.
     const paramDefs = Object.keys(baseParams).map(paramName => {
-        const res = { name: paramName };
-        if (typeof overrideDefs[paramName] === 'string') {
-            res.value = overrideDefs[paramName];
-            return res;
-        }
-        if (typeof baseParams[paramName] === 'string') {
-            res.value = baseParams[paramName];
-            return res;
-        }
+        const maybeOverrideValue = overrideDefs[paramName];
+        const res = {
+            name: paramName,
+            value: (typeof maybeOverrideValue !== 'undefined')
+                ? maybeOverrideValue
+                : baseParams[paramName]
+        };
+        return res;
     }).filter(p => p);
 
     // Create our exports object before running any existing handlers.

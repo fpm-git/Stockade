@@ -176,8 +176,8 @@ module.exports = {
                     if (!paramDef.startsWith('?') && !paramDef.startsWith('$') && !paramDef.startsWith('req.')) {
                         throw new Error(`The provider definition "${name}" in namespace "${namespace}" contains an invalid _params entry "${key}". The string value must begin with one of '?', '$' or 'req.'`);
                     }
-                } else {
-                    throw new Error(`The provider definition "${name}" in namespace "${namespace}" contains an invalid _params entry "${key}". Expected a string, but instead found: (${typeof paramDef}) ${paramDef}`);
+                } else if (!(paramDef instanceof Object) || !('value' in paramDef)) {
+                    throw new Error(`The provider definition "${name}" in namespace "${namespace}" contains an invalid _params entry "${key}". Expected a string or an object with a "value" field, but instead found: (${typeof paramDef}) ${paramDef}`);
                 }
             }
         }

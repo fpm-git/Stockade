@@ -39,8 +39,8 @@ module.exports = class ValidatorProvider {
                         if (!args[0].startsWith('?') && !args[0].startsWith('$') && !args[0].startsWith('req.')) {
                             throw new Error(`Attempted to set parameter definition "${property}" to an invalid string value. String-type parameter definitions must start with one of: '?', '$' or 'req.'`);
                         }
-                    } else {
-                        throw new Error(`Attempted to set parameter definition "${property}" to an invalid value! Expected a string, but instead found: (${typeof args[0]}) ${args[0]}`);
+                    } else if (!(args[0] instanceof Object) || !('value' in args[0])) {
+                        throw new Error(`Attempted to set parameter definition "${property}" to an invalid value! Expected a string or an object with a "value" field, but instead found: (${typeof args[0]}) ${args[0]}`);
                     }
 
                     obj.params[property] = args[0];
