@@ -1,0 +1,5 @@
+.github
+.eslintrc.json
+.editorconfig
+node_modules
+test
